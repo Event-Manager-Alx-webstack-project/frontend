@@ -6,7 +6,8 @@ import Account from './Account';
 const App = () => {
   const [userData, setUserData] = useState(null);
 
-  return (
+console.log('Current userData:', userData); // Log userData to track changes  
+return (
     <Router>
       <div className="App">
         <Routes>
