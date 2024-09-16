@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Avatar, Typography, Container, Box, Grid, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const Account = ({ userData }) => {
-    // Log userData to confirm it's being received
+    const navigate = useNavigate();
     console.log('Received userData in Account:', userData);
   
     // Check if userData is null or undefined

@@ -42,7 +42,7 @@ const UserAccount = ({ setUserData }) => {
           followerCount,
         });
         // Navigate to the Account section
-        navigate('/account');
+        //navigate('/account');
       };
 
 return (
