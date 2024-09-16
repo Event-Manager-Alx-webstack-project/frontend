@@ -1,185 +1,130 @@
+import { useState } from 'react';
+import InputField from '../../components/Auth/InputField';
+import AuthButton from '../../components/Auth/AuthButton';
+import { Link, useNavigate } from 'react-router-dom';
+import '../../assets/styles/tailwind.css';
+import { registerUser } from '../../api/authApi';
 
-import { useRef, useState, useEffect } from "react";
-import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from './api/axios';
+const Signup = () => {
+    const [username, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [role, setRole] = useState('attendee'); // Default role set to 'user'
+    const [brandName, setBrandName] = useState('');
+    const [description, setDescription] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const REGISTER_URL = '/register';
+    const handleNameInputChange = (e) => {
+        setName(e.target.value);
+    };
 
-const Register = () => {
-    const userRef = useRef();
-    const errRef = useRef();
+    const handleEmailInputChange = (e) => {
+        setEmail(e.target.value);
+    };
 
-    const [user, setUser] = useState('');
-    const [validName, setValidName] = useState(false);
-    const [userFocus, setUserFocus] = useState(false);
+    const handlePasswordInputChange = (e) => {
+        setPassword(e.target.value);
+    };
 
-    const [pwd, setPwd] = useState('');
-    const [validPwd, setValidPwd] = useState(false);
-    const [pwdFocus, setPwdFocus] = useState(false);
+    const handleRoleInputChange = (e) => {
+        setRole(e.target.value);
+    };
 
-    const [matchPwd, setMatchPwd] = useState('');
-    const [validMatch, setValidMatch] = useState(false);
-    const [matchFocus, setMatchFocus] = useState(false);
+    const handleBrandNameInputChange = (e) => {
+        setBrandName(e.target.value);
+    };
 
-    const [errMsg, setErrMsg] = useState('');
-    const [success, setSuccess] = useState(false);
-
-    useEffect(() => {
-        userRef.current.focus();
-    }, [])
-
-    useEffect(() => {
-        setValidName(USER_REGEX.test(user));
-    }, [user])
-
-    useEffect(() => {
-        setValidPwd(PWD_REGEX.test(pwd));
-        setValidMatch(pwd === matchPwd);
-    }, [pwd, matchPwd])
-
-    useEffect(() => {
-        setErrMsg('');
-    }, [user, pwd, matchPwd])
+    const handleDescriptionInputChange = (e) => {
+        setDescription(e.target.value);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // if button enabled with JS hack
-        const v1 = USER_REGEX.test(user);
-        const v2 = PWD_REGEX.test(pwd);
-        if (!v1 || !v2) {
-            setErrMsg("Invalid Entry");
-            return;
-        }
+        setLoading(true);
+        setError('');
         try {
-            const response = await axios.post(REGISTER_URL,
-                JSON.stringify({ user, pwd }),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }
-            );
-            console.log(response?.data);
-            console.log(response?.accessToken);
-            console.log(JSON.stringify(response))
-            setSuccess(true);
-            //clear state and controlled inputs
-            //need value attrib on inputs for this
-            setUser('');
-            setPwd('');
-            setMatchPwd('');
-        } catch (err) {
-            if (!err?.response) {
-                setErrMsg('No Server Response');
-            } else if (err.response?.status === 409) {
-                setErrMsg('Username Taken');
-            } else {
-                setErrMsg('Registration Failed')
-            }
-            errRef.current.focus();
+            const data = await registerUser({
+                username,
+                email,
+                password,
+                role,
+                brandName: role === 'organizer' ? brandName : null,
+                description: role === 'organizer' ? description : null
+            });
+            console.log('Registration successful:', data);
+            navigate('/login'); // Redirect to the login page
+        } catch (error) {
+            console.error('Registration failed:', error.response?.data || error.message);
+            setError('Registration failed. Please check your details and try again.');
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
     return (
-        <>
-            {success ? (
-                <section>
-                    <h1>Success!</h1>
-                    <p>
-                        <a href="#">Sign In</a>
-                    </p>
-                </section>
-            ) : (
-                <section>
-                    <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                    <h1>Register</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">
-                            Username:
-                            <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validName || !user ? "hide" : "invalid"} />
-                        </label>
-                        <input
-                            type="text"
-                            id="username"
-                            ref={userRef}
-                            autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
-                            value={user}
-                            required
-                            aria-invalid={validName ? "false" : "true"}
-                            aria-describedby="uidnote"
-                            onFocus={() => setUserFocus(true)}
-                            onBlur={() => setUserFocus(false)}
-                        />
-                        <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            4 to 24 characters.<br />
-                            Must begin with a letter.<br />
-                            Letters, numbers, underscores, hyphens allowed.
-                        </p>
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-orange-400 to-yellow-300">
+            <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+                <h1 className="text-3xl font-bold text-center text-orange-600">Syncory</h1>
+                <p className="mt-4 text-sm text-center text-gray-600">
+                    Already have an account? <Link to="/login" className="text-orange-600">Login!</Link>
+                </p>
+                <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
+                    <InputField
+                        type="text"
+                        placeholder="UserName"
+                        value={username}
+                        onChange={handleNameInputChange}
+                    />
+                    <InputField
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={handleEmailInputChange}
+                    />
+                    <InputField
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={handlePasswordInputChange}
+                    />
+                    <div className="mt-4">
+                        <label className="block text-gray-700">Role</label>
+                        <select
+                            value={role}
+                            onChange={handleRoleInputChange}
+                            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-orange-600"
+                        >
+                            <option value="attendee">attendee</option>
+                            <option value="organizer">Organizer</option>
+                        </select>
+                    </div>
+                    {role === 'organizer' && (
+                        <>
+                            <InputField
+                                type="text"
+                                placeholder="Brand Name"
+                                value={brandName}
+                                onChange={handleBrandNameInputChange}
+                            />
+                            <InputField
+                                type="text"
+                                placeholder="Description"
+                                value={description}
+                                onChange={handleDescriptionInputChange}
+                            />
+                        </>
+                    )}
+                    {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+                    <AuthButton text={loading ? "Signing up..." : "Sign Up"} disabled={loading} onClick={handleSubmit} />
+                    <div className="flex items-center justify-center mt-4">
+                        <AuthButton text="Sign up with Google" isGoogle />
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
 
-
-                        <label htmlFor="password">
-                            Password:
-                            <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            onChange={(e) => setPwd(e.target.value)}
-                            value={pwd}
-                            required
-                            aria-invalid={validPwd ? "false" : "true"}
-                            aria-describedby="pwdnote"
-                            onFocus={() => setPwdFocus(true)}
-                            onBlur={() => setPwdFocus(false)}
-                        />
-                        <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            8 to 24 characters.<br />
-                            Must include uppercase and lowercase letters, a number and a special character.<br />
-                            Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
-                        </p>
-
-
-                        <label htmlFor="confirm_pwd">
-                            Confirm Password:
-                            <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
-                        </label>
-                        <input
-                            type="password"
-                            id="confirm_pwd"
-                            onChange={(e) => setMatchPwd(e.target.value)}
-                            value={matchPwd}
-                            required
-                            aria-invalid={validMatch ? "false" : "true"}
-                            aria-describedby="confirmnote"
-                            onFocus={() => setMatchFocus(true)}
-                            onBlur={() => setMatchFocus(false)}
-                        />
-                        <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            Must match the first password input field.
-                        </p>
-
-                        <button disabled={!validName || !validPwd || !validMatch ? true : false}>Sign Up</button>
-                    </form>
-                    <p>
-                        Already registered?<br />
-                        <span className="line">
-                            {/*put router link here*/}
-                            <Link to="/login">Sign In</Link>
-                        </span>
-                    </p>
-                </section>
-            )}
-        </>
-    )
-}
-
-export default Register
+export default Signup;
