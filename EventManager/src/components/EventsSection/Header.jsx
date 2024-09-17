@@ -58,7 +58,7 @@ const Header = () => {
         >
             <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                 <div className="text-3xl font-bold text-white">
-                    <Link to="/">Syncory</Link>
+                    <Link to="/">EventMate</Link>
                 </div>
 
                 {/* Desktop Navigation */}
