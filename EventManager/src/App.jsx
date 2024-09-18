@@ -1,20 +1,12 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import UserAccount from './UserAccount';
-import Account from './Account';
+import AppRoutes from './Routers/router'; // Ensure this is the correct path to your routes file
+import './App.css';
+import './index.css';
 
 const App = () => {
-  const [userData, setUserData] = useState(null);
-
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<UserAccount setUserData={setUserData} />} />
-          <Route path="/account" element={userData ? <Account userData={userData} /> : <div>Please fill out the form first.</div>} />
-        </Routes>
-      </div>
-    </Router>
+    <div className="App">
+      <AppRoutes />
+    </div>
   );
 };
 
