@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthButton from '../../components/Auth/AuthButton';
+import AuthButton from '../../components/Auth/Button';
 import { Link } from 'react-router-dom';
 import { loginUser, storeAuthToken } from '../../api/authApi';
 import '../../assets/styles/tailwind.css';
@@ -45,7 +45,7 @@ const Login = () => {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-orange-400 to-yellow-300">
             <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
-                <h1 className="text-3xl font-bold text-center text-orange-600">Syncory</h1>
+                <h1 className="text-3xl font-bold text-center text-orange-600">EventMate</h1>
                 <p className="mt-4 text-sm text-center text-gray-600">
                     Don&apos;t have an account? <Link to="/signup" className="text-orange-600">Create a new account now!</Link>
                 </p>
