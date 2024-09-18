@@ -8,7 +8,7 @@ const Footer = () => {
                 <div className="flex flex-wrap justify-between items-center">
                     {/* Logo */}
                     <div className="w-full sm:w-auto mb-6 sm:mb-0">
-                        <h2 className="text-3xl font-bold text-yellow-500">Syncory</h2>
+                        <h2 className="text-3xl font-bold text-yellow-500">EventMate</h2>
                     </div>
 
                     {/* Navigation Links */}
@@ -41,7 +41,7 @@ const Footer = () => {
 
                 {/* Copyright Info */}
                 <div className="text-center text-gray-400 text-sm">
-                    <p>&copy; {new Date().getFullYear()} Syncory. All Rights Reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} EventMate. All Rights Reserved.</p>
                     <p className="mt-2">
                         <Link to="/terms" className="hover:text-yellow-500 transition-colors">Terms of Service</Link> |{' '}
                         <Link to="/privacy" className="hover:text-yellow-500 transition-colors">Privacy Policy</Link>
