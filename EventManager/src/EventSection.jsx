@@ -56,6 +56,7 @@ const EventSection = ({ category }) => {
                 <Button variant="outlined" color="secondary" size="small" sx={{ marginLeft: 1 }}>Share</Button>
                 <Button variant="outlined" size="small" sx={{ marginLeft: 1 }}>Comment</Button>
                 <Button variant="outlined" size="small" sx={{ marginLeft: 1 }}>Flag</Button>
+		<Button variant="contained" color="success" size="small" sx={{ marginLeft: 1 }}>Buy Ticket</Button>
               </Box>
             </Box>
           </Grid>

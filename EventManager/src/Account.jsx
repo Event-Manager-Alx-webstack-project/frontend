@@ -84,6 +84,16 @@ return (
           </Grid>
         ))}
       </Grid>
+
+	{/* Post Event Button */}
+      <Button
+        variant="contained"
+        color="primary"
+        sx={{ marginTop: 4 }}
+        onClick={handlePostEventClick} // Logic to post an event can be added here
+      >
+        Post Event
+      </Button>
     </Container>
   );
 };
