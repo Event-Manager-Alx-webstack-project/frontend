@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://api.";
+const API_BASE_URL = "http://api/v1/";
 
 // Function to get the authentication token
 const getAuthToken = () => {
-  return localStorage.getItem("AuthToken");
+  return localStorage.getItem("authToken");
 };
 
 // getCategories function

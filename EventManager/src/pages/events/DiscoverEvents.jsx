@@ -73,6 +73,8 @@ const DiscoverEventsPage = () => {
                         </select>
                         <select className="px-4 py-2 border border-gray-300 rounded-full shadow-sm focus:outline-none">
                             <option>Location</option>
+                            <option>Lagos</option>
+                            <option>Johnnesburg</option>
                             <option>New York</option>
                             <option>San Francisco</option>
                         </select>

@@ -7,36 +7,33 @@ import '../../assets/styles/tailwind.css';
 import InputField from '../../components/Auth/InputField';
 
 const Login = () => {
-    const [inputEmail, setEmail] = useState('');
-    const [inputPassword, setPassword] = useState('');
+    const [email, setEmail] = useState(''); // Renamed to email for consistency
+    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleEmailInputChange = (e) => {
-        setEmail(e.target.value);
-    };
+    const handleEmailInputChange = (e) => setEmail(e.target.value);
 
-    const handlePasswordInputChange = (e) => {
-        setPassword(e.target.value);
-    };
+    const handlePasswordInputChange = (e) => setPassword(e.target.value);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setError('');
+        setError(''); // Clear any previous errors
 
         try {
-            const response = await loginUser(inputEmail, inputPassword);
+            const response = await loginUser(email, password);
             if (response.message === "Login successful") {
-                storeAuthToken(response.token); // Assuming the token is in the response
-                localStorage.setItem('authToken', response.token); // Store token in local storage
-                navigate('/'); // Navigate to the dashboard or desired page
+                storeAuthToken(response.token); // Store auth token
+                localStorage.setItem('authToken', response.token); // Save token in local storage
+                navigate('/'); // Redirect to home page or dashboard
             } else {
-                setError(response.message);
+                setError(response.message); // Show error if login fails
             }
         } catch (err) {
-            setError('Login failed. Please try again.', err);
+            console.error('Login error:', err);
+            setError('Login failed. Please check your email and password and try again.');
         } finally {
             setLoading(false);
         }
@@ -45,7 +42,7 @@ const Login = () => {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-orange-400 to-yellow-300">
             <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
-                <h1 className="text-3xl font-bold text-center text-orange-600">EventMate</h1>
+                <h1 className="text-3xl font-bold text-center text-orange-600">EventMeet</h1>
                 <p className="mt-4 text-sm text-center text-gray-600">
                     Don&apos;t have an account? <Link to="/signup" className="text-orange-600">Create a new account now!</Link>
                 </p>
@@ -53,17 +50,17 @@ const Login = () => {
                     <InputField
                         type="email"
                         placeholder="Email/Username"
-                        value={inputEmail}
+                        value={email}
                         onChange={handleEmailInputChange}
                     />
                     <InputField
                         type="password"
                         placeholder="Password"
-                        value={inputPassword}
+                        value={password}
                         onChange={handlePasswordInputChange}
                     />
                     {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-                    <AuthButton text={loading ? "Logging in..." : "Login now"} disabled={loading} onClick={handleSubmit} />
+                    <AuthButton text={loading ? "Logging in..." : "Login now"} disabled={loading} />
                     <div className="flex items-center justify-center mt-4">
                         <AuthButton text="Login with Google" isGoogle />
                     </div>

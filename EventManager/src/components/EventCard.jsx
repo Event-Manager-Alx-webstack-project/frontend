@@ -1,7 +1,6 @@
 import { FaCalendarAlt, FaMapMarkerAlt, FaDollarSign } from 'react-icons/fa';
 import { Link } from "react-router-dom";
 
-
 const EventCard = ({ title, date, location, description, thumbnail, price }) => {
     const isFree = price === 0;
 
@@ -15,7 +14,7 @@ const EventCard = ({ title, date, location, description, thumbnail, price }) => 
                         <span className="text-gray-400">No Image Available</span>
                     </div>
                 )}
-                <span className={`absolute top-2 left-2 text-white text-sm px-3 py-1 rounded-full ${isFree ? 'bg-yellow-500' : 'bg-yellow-500'}`}>
+                <span className={`absolute top-2 left-2 text-white text-sm px-3 py-1 rounded-full ${isFree ? 'bg-green-500' : 'bg-yellow-500'}`}>
                     {isFree ? 'FREE' : 'PAID'}
                 </span>
             </div>
@@ -38,11 +37,11 @@ const EventCard = ({ title, date, location, description, thumbnail, price }) => 
                     )}
                 </div>
                 <p className="text-gray-700 mb-4 line-clamp-3">{description}</p>
-                <button className="w-full bg-yellow-500 text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-600 transition-colors">
-                    <Link to="/event" className="block w-full h-full text-center">
+                <Link to="/event" className="block">
+                    <button className="w-full bg-yellow-500 text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-600 transition-colors">
                         View Details
-                    </Link>
-                </button>
+                    </button>
+                </Link>
             </div>
         </div>
     );

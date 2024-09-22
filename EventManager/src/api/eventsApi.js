@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Use environment variable for API base URL
-const API_BASE_URL = "http://api";
+const API_BASE_URL =  "http://api/v1/";
 
 // Get all events
 export const getEvents = async () => {
@@ -28,32 +28,43 @@ export const getEvent = async (id) => {
 // Create an event
 export const createEvent = async (eventData) => {
   const token = localStorage.getItem("authToken");
-  const response = await axios.post(
-    `${API_BASE_URL}events`,
-    eventData,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return response;
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}events`,
+      eventData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error creating event:", error);
+    throw error.response?.data || error.message;
+  }
 };
 
+// Upload thumbnail
 export const uploadThumbnail = async (formData) => {
   const token = localStorage.getItem("authToken");
-  const response = await axios.post(
-   `${API_BASE_URL}upload`,
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return response;
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}upload`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error uploading thumbnail:", error);
+    throw error.response?.data || error.message;
+  }
 };
 
 // Update an event
