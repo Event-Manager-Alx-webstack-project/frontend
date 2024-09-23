@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { TextField, Button, Avatar, Typography, Container } from '@mui/material';
 
 const UserAccount = ({ setUserData }) => {
   const navigate = useNavigate();
@@ -22,8 +23,17 @@ const UserAccount = ({ setUserData }) => {
 
       const handleSubmit = (event) => {
         event.preventDefault();
-        // Set user data in the parent component
-        setUserData({
+        // Log form data before setting userData
+        console.log('Form submitted:', {
+          name,
+          username,
+          bio,
+          profilePicture,
+          followingCount,
+          followerCount,
+        });
+
+	  setUserData({
           name,
           username,
           bio,
@@ -32,43 +42,22 @@ const UserAccount = ({ setUserData }) => {
           followerCount,
         });
         // Navigate to the Account section
-        navigate('/account');
+        //navigate('/account');
       };
 
-      return (
-        <div className="user-account">
-          <h2>User Account</h2>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label>Name:</label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label>Username:</label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Save</button>
+return (
+  <Container maxWidth="sm">
+    <Typography variant="h4" gutterBottom>User Account</Typography>
+    <form onSubmit={handleSubmit}>
+      <TextField label="Name" fullWidth margin="normal" value={name} onChange={(e) => setName(e.target.value)} required />
+      <TextField label="Username" fullWidth margin="normal" value={username} onChange={(e) => setUsername(e.target.value)} required />
+      <TextField label="Password" type="password" fullWidth margin="normal" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      <TextField label="Bio" fullWidth margin="normal" multiline rows={4} value={bio} onChange={(e) => setBio(e.target.value)} required />
+      <input type="file" accept="image/*" onChange={handleProfilePictureChange} />
+      {profilePicture && <Avatar src={profilePicture} alt="Profile Preview" sx={{ width: 100, height: 100, marginTop: 2 }} />}
+        <Button type="submit" variant="contained" color="primary" fullWidth>Save</Button>
       </form>
-    </div>
+    </Container>
   );
 };
 
