@@ -6,10 +6,11 @@ const AuthButton = ({
     isGoogle = false,
     icon = null,
     onClick = () => { },
+    type = 'button', // By default it's a regular button, but can be 'submit'
 }) => {
     return (
         <button
-            type="button"
+            type={type}
             onClick={onClick}
             className={`w-full flex items-center justify-center px-4 py-2 mt-4 font-bold text-white rounded-lg transition duration-300 ease-in-out transform hover:scale-105 ${isGoogle ? 'bg-orange-300 hover:bg-orange-400 text-black' : 'bg-black hover:bg-gray-800'}`}
         >
@@ -28,6 +29,7 @@ AuthButton.propTypes = {
     isGoogle: PropTypes.bool,
     icon: PropTypes.element,
     onClick: PropTypes.func,
+    type: PropTypes.oneOf(['button', 'submit']), // Specify button or submit
 };
 
 export default AuthButton;

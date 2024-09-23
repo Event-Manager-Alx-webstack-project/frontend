@@ -1,38 +1,39 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://api/v1/";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v1/";
 
 // Function to get the authentication token
 const getAuthToken = () => {
   return localStorage.getItem("authToken");
 };
 
-// getCategories function
+// Function to set default headers
+const getDefaultHeaders = () => ({
+  Authorization: `Bearer ${getAuthToken()}`,
+});
+
+// Get categories function
 export const getCategories = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}users/categories`, {
-      headers: {
-        Authorization: `Bearer ${getAuthToken()}`,
-      },
+      headers: getDefaultHeaders(),
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching categories: ", error);
+    console.error("Error fetching categories:", error);
     throw error;
   }
 };
 
-// getOrganizers function
+// Get organizers function
 export const getOrganizers = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}users/organizers`, {
-      headers: {
-        Authorization: `Bearer ${getAuthToken()}`,
-      },
+      headers: getDefaultHeaders(),
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching organizers: ", error);
+    console.error("Error fetching organizers:", error);
     throw error;
   }
 };

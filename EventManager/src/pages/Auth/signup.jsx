@@ -116,9 +116,9 @@ const Signup = () => {
                         </>
                     )}
                     {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-                    <AuthButton text={loading ? "Signing up..." : "Sign Up"} disabled={loading} />
+                    <AuthButton type="submit" text={loading ? "Signing up..." : "Sign Up"} disabled={loading} />
                     <div className="flex items-center justify-center mt-4">
-                        <AuthButton text="Sign up with Google" isGoogle />
+                        <AuthButton text="Sign up with Google" isGoogle onClick={() => console.log('Google signup')} />
                     </div>
                 </form>
             </div>

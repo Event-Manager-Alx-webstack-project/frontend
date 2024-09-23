@@ -1,33 +1,38 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import AuthButton from '../../components/Auth/Button';
-import { Link } from 'react-router-dom';
 import { loginUser, storeAuthToken } from '../../api/authApi';
 import '../../assets/styles/tailwind.css';
 import InputField from '../../components/Auth/InputField';
 
 const Login = () => {
-    const [email, setEmail] = useState(''); // Renamed to email for consistency
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleEmailInputChange = (e) => setEmail(e.target.value);
-
     const handlePasswordInputChange = (e) => setPassword(e.target.value);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setError(''); // Clear any previous errors
+        setError('');
 
         try {
             const response = await loginUser(email, password);
             if (response.message === "Login successful") {
-                storeAuthToken(response.token); // Store auth token
-                localStorage.setItem('authToken', response.token); // Save token in local storage
-                navigate('/'); // Redirect to home page or dashboard
+                storeAuthToken(response.token);
+                localStorage.setItem('authToken', response.token);
+
+                // Check user role and navigate accordingly
+                const userRole = response.role; // Ensure your API returns this
+                if (userRole === 'organizer') {
+                    navigate('/organizer-dashboard'); // Redirect to organizer dashboard
+                } else {
+                    navigate('/attendee-dashboard'); // Redirect to attendee dashboard
+                }
             } else {
                 setError(response.message); // Show error if login fails
             }
