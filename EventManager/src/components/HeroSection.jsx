@@ -2,15 +2,15 @@ const HeroSection = () => {
     return (
         <section className="bg-hero-pattern bg-cover bg-center h-screen flex flex-col justify-center text-white relative">
             <div className="container mx-auto px-6 text-center">
-                <h1
+                <h6
                     className="text-6xl font-extrabold mb-6 leading-tight shadow-md animate-fade-in-down"
                 >
-                    Discover, create,<br /> and join amazing <br />events on your way.
-                </h1>
+                   Create, Discover, <br /> Enroll and join amazing <br />events on your way.
+                </h6>
                 <p
                     className="text-2xl mb-12 text-gray-200 animate-fade-in-up delay-1"
                 >
-                    Sync Your Events, Craft Your Stories.
+                    Sync Your Events, Craft Your Stories that Stands out.
                 </p>
                 <div className="flex justify-center max-w-lg mx-auto animate-bounce-in-up delay-2">
                     <input

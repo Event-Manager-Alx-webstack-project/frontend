@@ -1,13 +1,50 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import EventCard from "../EventCard";
-import { FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
+import { getUpcomingEvents } from "../../api/eventsApi"; 
 
 const UpcomingEvents = () => {
+    const [events, setEvents] = useState([]);
+    const [filteredEvents, setFilteredEvents] = useState([]);
+    const [activeFilter, setActiveFilter] = useState('All');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
     useEffect(() => {
         AOS.init({ duration: 1000 });
+        
+        // Fetch events from an API
+        getUpcomingEvents()
+            .then((data) => {
+                setEvents(data);
+                setFilteredEvents(data); // Initially show all events
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError("Failed to load events");
+                setLoading(false);
+            });
     }, []);
+
+    // Filter events based on the selected category
+    const filterEvents = (category) => {
+        setActiveFilter(category);
+        if (category === "All") {
+            setFilteredEvents(events);
+        } else {
+            const filtered = events.filter(event => event.category === category);
+            setFilteredEvents(filtered);
+        }
+    };
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <section className="py-16 bg-gray-50">
@@ -16,35 +53,48 @@ const UpcomingEvents = () => {
                     Upcoming Public <span className="text-yellow-600">Events</span>
                 </h2>
                 <p className="text-gray-600 mb-8" data-aos="fade-up" data-aos-delay="100">
-                    Discover All Upcoming Addis Events. Upcoming Events in your location.
+                    Discover All Upcoming Lagos Events. Upcoming Events in your location.
                 </p>
 
                 <div className="flex justify-center space-x-4 mb-12" data-aos="fade-up" data-aos-delay="200">
-                    <button className="bg-yellow-500 text-black px-4 py-2 rounded-full hover:bg-yellow-600 transition-colors focus:outline-none focus:ring focus:ring-yellow-400">
+                    <button 
+                        onClick={() => filterEvents("All")} 
+                        className={`px-4 py-2 rounded-full transition-colors focus:outline-none focus:ring focus:ring-yellow-400 
+                        ${activeFilter === "All" ? "bg-yellow-500 text-black" : "bg-gray-200 text-gray-800"}`}>
                         All
                     </button>
-                    <button className="bg-gray-200 text-gray-800 px-4 py-2 rounded-full hover:bg-yellow-500 hover:text-white transition-colors focus:outline-none focus:ring focus:ring-yellow-400">
+                    <button 
+                        onClick={() => filterEvents("Concerts")} 
+                        className={`px-4 py-2 rounded-full transition-colors focus:outline-none focus:ring focus:ring-yellow-400 
+                        ${activeFilter === "Concerts" ? "bg-yellow-500 text-black" : "bg-gray-200 text-gray-800"}`}>
                         Concerts
                     </button>
-                    <button className="bg-gray-200 text-gray-800 px-4 py-2 rounded-full hover:bg-yellow-500 hover:text-white transition-colors focus:outline-none focus:ring focus:ring-yellow-400">
+                    <button 
+                        onClick={() => filterEvents("Conferences")} 
+                        className={`px-4 py-2 rounded-full transition-colors focus:outline-none focus:ring focus:ring-yellow-400 
+                        ${activeFilter === "Conferences" ? "bg-yellow-500 text-black" : "bg-gray-200 text-gray-800"}`}>
                         Conferences
                     </button>
-                    <button className="bg-gray-200 text-gray-800 px-4 py-2 rounded-full hover:bg-yellow-500 hover:text-white transition-colors focus:outline-none focus:ring focus:ring-yellow-400">
+                    <button 
+                        onClick={() => filterEvents("Workshops")} 
+                        className={`px-4 py-2 rounded-full transition-colors focus:outline-none focus:ring focus:ring-yellow-400 
+                        ${activeFilter === "Workshops" ? "bg-yellow-500 text-black" : "bg-gray-200 text-gray-800"}`}>
                         Workshops
                     </button>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {/* Example Event Card */}
-                    <EventCard
-                        title="Dawit Dreams Motivation Spike"
-                        date="August 22, 2024"
-                        location="Bola, Addis Ababa"
-                        description="Join us for an inspiring event with Dawit Dreams."
-                        thumbnail="/path/to/event.jpg"
-                        price={0} // Assuming 0 means FREE
-                    />
-                    {/* Repeat for more events */}
+                    {filteredEvents.map(event => (
+                        <EventCard
+                            key={event.id}
+                            title={event.title}
+                            date={event.date}
+                            location={event.location}
+                            description={event.description}
+                            thumbnail={event.thumbnail}
+                            price={event.price}
+                        />
+                    ))}
                 </div>
             </div>
         </section>

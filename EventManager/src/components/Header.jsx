@@ -58,7 +58,7 @@ const Header = () => {
         >
             <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                 <div className="text-3xl font-bold text-white">
-                    <Link to="/">EventMate</Link>
+                    <Link to="/">EventMeet</Link>
                 </div>
 
                 {/* Desktop Navigation */}
@@ -88,11 +88,18 @@ const Header = () => {
                             </button>
                         </>
                     ) : (
-                        <Link to="/login">
-                            <button className="bg-yellow-500 text-black px-5 py-2 rounded-md font-semibold hover:bg-yellow-600 transition-colors">
-                                Sign In
-                            </button>
-                        </Link>
+                        <>
+                            <Link to="/login">
+                                <button className="bg-yellow-500 text-black px-5 py-2 rounded-md font-semibold hover:bg-yellow-600 transition-colors">
+                                    Sign In
+                                </button>
+                            </Link>
+                            <Link to="/signup">
+                                <button className="bg-yellow-500 text-black px-5 py-2 rounded-md font-semibold hover:bg-yellow-600 transition-colors">
+                                    Sign Up
+                                </button>
+                            </Link>
+                        </>
                     )}
                 </div>
 
@@ -135,7 +142,7 @@ const Header = () => {
                         Home
                     </Link>
                     <Link
-                        to="/discover"
+                        to="/events/discover"
                         className="block py-2 text-white hover:text-orange-400 transition-colors"
                         onClick={() => setIsMenuOpen(false)}
                     >
@@ -155,7 +162,7 @@ const Header = () => {
                                 className="block py-2 text-white hover:text-orange-400 transition-colors"
                                 onClick={() => setIsMenuOpen(false)}
                             >
-                                {user.name}
+                                {user.username}
                             </Link>
                             <button
                                 onClick={() => {
@@ -168,13 +175,22 @@ const Header = () => {
                             </button>
                         </>
                     ) : (
-                        <Link
-                            to="/login"
-                            className="block py-2 bg-yellow-500 text-black mt-2 rounded-md font-semibold mx-4 hover:bg-yellow-600 transition-colors"
-                            onClick={() => setIsMenuOpen(false)}
-                        >
-                            Sign In
-                        </Link>
+                        <>
+                            <Link
+                                to="/login"
+                                className="block py-2 bg-yellow-500 text-black mt-2 rounded-md font-semibold mx-4 hover:bg-yellow-600 transition-colors"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Sign In
+                            </Link>
+                            <Link
+                                to="/signup"
+                                className="block py-2 bg-yellow-500 text-black mt-2 rounded-md font-semibold mx-4 hover:bg-yellow-600 transition-colors"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Sign Up
+                            </Link>
+                        </>
                     )}
                 </nav>
             )}

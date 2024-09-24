@@ -1,7 +1,11 @@
 import axios from "axios";
 
 // Use environment variable for API base URL
+<<<<<<< HEAD
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v1/events";
+=======
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v1/";
+>>>>>>> cbe73978297fff776fd7be2f504cf2e5b9b44860
 
 // Function to get auth token from localStorage
 const getAuthToken = () => localStorage.getItem("authToken");
@@ -60,7 +64,11 @@ export const getEventsByUser = async (userId) => {
 export const createEvent = async (eventData) => {
   const token = getAuthToken();
   try {
+<<<<<<< HEAD
     const response = await axios.post(`${API_BASE_URL}`, eventData, {
+=======
+    const response = await axios.post(`${API_BASE_URL}events`, eventData, {
+>>>>>>> cbe73978297fff776fd7be2f504cf2e5b9b44860
       headers: {
         ...defaultHeaders,
         Authorization: `Bearer ${token}`,
@@ -106,7 +114,11 @@ export const updateEvent = async (id, eventData) => {
 // Delete an event
 export const deleteEvent = async (id) => {
   try {
+<<<<<<< HEAD
     const response = await axios.delete(`${API_BASE_URL}${id}`, {
+=======
+    const response = await axios.delete(`${API_BASE_URL}events/${id}`, {
+>>>>>>> cbe73978297fff776fd7be2f504cf2e5b9b44860
       headers: defaultHeaders,
     });
     return response.data;
@@ -231,6 +243,7 @@ export const getUpcomingEvents = async () => {
   }
 };
 
+
 // Like an event
 export const likeEvent = async (eventId) => {
   const token = getAuthToken();
@@ -262,4 +275,3 @@ export const dislikeEvent = async (eventId) => {
     throw error.response?.data || error.message;
   }
 };
-

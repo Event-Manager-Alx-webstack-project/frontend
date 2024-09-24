@@ -1,12 +1,35 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import EventCard from "../EventCard";
+import { getFeaturedEvents } from "../../api/eventsApi"; // Assuming API call to get featured events
 
 const FeaturedEvents = () => {
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
     useEffect(() => {
         AOS.init({ duration: 1000 });
+        
+        getFeaturedEvents()
+            .then((data) => {
+                setEvents(data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError("Failed to load featured events");
+                setLoading(false);
+            });
     }, []);
+
+    if (loading) {
+        return <div>Loading...</div>; // Show a loading indicator
+    }
+
+    if (error) {
+        return <div>{error}</div>; // Show an error message
+    }
 
     return (
         <section className="py-16 bg-gray-100">
@@ -19,18 +42,23 @@ const FeaturedEvents = () => {
                     <span className="mx-4 text-2xl">&#128081;</span> {/* Crown Emoji */}
                     <hr className="w-16 border-b-2 border-gray-300" />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {/* Example Event Card */}
-                    <EventCard
-                        title="Dawit Dreams Motivation Spike"
-                        date="August 22, 2024"
-                        location="Bola, Addis Ababa"
-                        description="Join us for an inspiring event with Dawit Dreams."
-                        thumbnail="/path/to/event.jpg"
-                        price={0} // Assuming 0 means FREE
-                    />
-                    {/* Repeat for more events */}
-                </div>
+                {events.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {events.map((event) => (
+                            <EventCard
+                                key={event.id}
+                                title={event.title}
+                                date={event.date}
+                                location={event.location}
+                                description={event.description}
+                                thumbnail={event.thumbnail}
+                                price={event.price}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <p>No featured events available at this time.</p>
+                )}
             </div>
         </section>
     );
