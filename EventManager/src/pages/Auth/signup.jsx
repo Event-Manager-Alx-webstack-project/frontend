@@ -5,32 +5,66 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../../assets/styles/tailwind.css';
 import { registerUser } from '../../api/authApi';
 
+// Utility function for email validation
+const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
+
+// Utility function for password strength validation
+const isStrongPassword = (password) => {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    return passwordRegex.test(password);
+};
+
 const Signup = () => {
     const [username, setName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState(''); // Added confirm password
-    const [role, setRole] = useState('attendee'); // Default role set to 'attendee'
-    const [brandName, setBrandName] = useState('');
-    const [description, setDescription] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [fieldErrors, setFieldErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleNameInputChange = (e) => setName(e.target.value);
-    const handleEmailInputChange = (e) => setEmail(e.target.value);
-    const handlePasswordInputChange = (e) => setPassword(e.target.value);
-    const handleConfirmPasswordInputChange = (e) => setConfirmPassword(e.target.value); // Handle confirm password
-    const handleRoleInputChange = (e) => setRole(e.target.value);
-    const handleBrandNameInputChange = (e) => setBrandName(e.target.value);
-    const handleDescriptionInputChange = (e) => setDescription(e.target.value);
+    // Field validation checks
+    const validateFields = () => {
+        const errors = {};
+
+        if (!username) errors.username = "Username is required.";
+        if (!firstName) errors.firstName = "First name is required.";
+        if (!lastName) errors.lastName = "Last name is required.";
+
+        if (!email) {
+            errors.email = "Email is required.";
+        } else if (!isValidEmail(email)) {
+            errors.email = "Please enter a valid email address.";
+        }
+
+        if (!password) {
+            errors.password = "Password is required.";
+        } else if (!isStrongPassword(password)) {
+            errors.password = "Password must be at least 8 characters long, include at least one letter, one number, and one special character.";
+        }
+
+        if (password !== confirmPassword) {
+            errors.confirmPassword = "Passwords do not match.";
+        }
+
+        return errors;
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        
-        if (password !== confirmPassword) { // Validate password and confirm password match
-            setError('Passwords do not match.');
+        setFieldErrors({});
+
+        const errors = validateFields();
+
+        if (Object.keys(errors).length > 0) {
+            setFieldErrors(errors);
             return;
         }
 
@@ -39,18 +73,16 @@ const Signup = () => {
         try {
             const data = await registerUser({
                 username,
+                firstName,
+                lastName,
                 email,
-                password,
-                confirmPassword,
-                role,
-                brandName: role === 'organizer' ? brandName : null,
-                description: role === 'organizer' ? description : null
+                password
             });
             console.log('Registration successful:', data);
-            navigate('/login'); // Redirect to the login page
+            navigate('/login');
         } catch (error) {
             console.error('Registration failed:', error.response?.data || error.message);
-            setError('Registration failed. Please check your details and try again.');
+            setError(error.response?.data?.message || 'Registration failed. Please check your details and try again.');
         } finally {
             setLoading(false);
         }
@@ -68,57 +100,54 @@ const Signup = () => {
                         type="text"
                         placeholder="Username"
                         value={username}
-                        onChange={handleNameInputChange}
+                        onChange={(e) => setName(e.target.value)}
                     />
+                    {fieldErrors.username && <p className="text-red-500 text-sm">{fieldErrors.username}</p>}
+                    
+                    <InputField
+                        type="text"
+                        placeholder="First Name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                    />
+                    {fieldErrors.firstName && <p className="text-red-500 text-sm">{fieldErrors.firstName}</p>}
+                    
+                    <InputField
+                        type="text"
+                        placeholder="Last Name"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                    />
+                    {fieldErrors.lastName && <p className="text-red-500 text-sm">{fieldErrors.lastName}</p>}
+                    
                     <InputField
                         type="email"
                         placeholder="Email"
                         value={email}
-                        onChange={handleEmailInputChange}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
+                    {fieldErrors.email && <p className="text-red-500 text-sm">{fieldErrors.email}</p>}
+                    
                     <InputField
                         type="password"
                         placeholder="Password"
                         value={password}
-                        onChange={handlePasswordInputChange}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
+                    {fieldErrors.password && <p className="text-red-500 text-sm">{fieldErrors.password}</p>}
+                    
                     <InputField
                         type="password"
                         placeholder="Confirm Password"
                         value={confirmPassword}
-                        onChange={handleConfirmPasswordInputChange}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                     />
-                    <div className="mt-4">
-                        <label className="block text-gray-700">Role</label>
-                        <select
-                            value={role}
-                            onChange={handleRoleInputChange}
-                            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-orange-600"
-                        >
-                            <option value="attendee">Attendee</option>
-                            <option value="organizer">Organizer</option>
-                        </select>
-                    </div>
-                    {role === 'organizer' && (
-                        <>
-                            <InputField
-                                type="text"
-                                placeholder="Brand Name"
-                                value={brandName}
-                                onChange={handleBrandNameInputChange}
-                            />
-                            <InputField
-                                type="text"
-                                placeholder="Description"
-                                value={description}
-                                onChange={handleDescriptionInputChange}
-                            />
-                        </>
-                    )}
+                    {fieldErrors.confirmPassword && <p className="text-red-500 text-sm">{fieldErrors.confirmPassword}</p>}
+                    
                     {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                     <AuthButton type="submit" text={loading ? "Signing up..." : "Sign Up"} disabled={loading} />
                     <div className="flex items-center justify-center mt-4">
-                        <AuthButton text="Sign up with Google" isGoogle onClick={() => console.log('Google signup')} />
+                        <AuthButton text="Sign up with Google" isGoogle onClick={() => console.log('Google signup')} disabled={loading} />
                     </div>
                 </form>
             </div>

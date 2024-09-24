@@ -14,7 +14,6 @@ const CreateEventPage = () => {
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
     const [location, setLocation] = useState('');
-    const [capacity, setCapacity] = useState('');
     const [categoryId, setCategoryId] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -88,12 +87,10 @@ const CreateEventPage = () => {
             title,
             date,
             location,
-            capacity,
             categoryId,
             description,
             price,
-            organizerId,
-            creatorId: user.id,
+            organizerId: user.id, // organizerId is same as user.id
             thumbnail: thumbnailPath,
         };
 
@@ -152,17 +149,6 @@ const CreateEventPage = () => {
                                 className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
                             />
                             {errors.location && <p className="text-red-500 text-sm">{errors.location}</p>}
-                        </div>
-                        <div className="space-y-2">
-                            <label className="block text-gray-600 text-sm font-medium">Capacity</label>
-                            <input
-                                type="number"
-                                value={capacity}
-                                onChange={(e) => setCapacity(e.target.value)}
-                                placeholder="Enter event capacity"
-                                className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
-                            />
-                            {errors.capacity && <p className="text-red-500 text-sm">{errors.capacity}</p>}
                         </div>
                         <div className="space-y-2">
                             <label className="block text-gray-600 text-sm font-medium">Category</label>
@@ -235,12 +221,16 @@ const CreateEventPage = () => {
                             {errors.organizerId && <p className="text-red-500 text-sm">{errors.organizerId}</p>}
                         </div>
                         <div className="text-center">
-                            <button
+                        <button
                                 type="submit"
-                                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-md transition duration-200"
+                                disabled={loading}
+                                className={`w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-md transition duration-200 ${
+                                    loading ? 'cursor-not-allowed opacity-50' : ''
+                                }`}
                             >
-                                Create Event
+                                {loading ? 'Creating...' : 'Create Event'}
                             </button>
+                            {errors.submit && <p className="text-red-500 text-sm mt-2">{errors.submit}</p>}
                         </div>
                     </form>
                 </div>

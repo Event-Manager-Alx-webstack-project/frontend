@@ -3,7 +3,6 @@ import DashboardSidebar from '../../components/DashboardSidebar';
 import DashboardHeader from '../../components/DashboardHeader';
 import EventCard from '../../components/EventCard';
 import PromoteEventCard from '../../components/PromoteEventCard';
-import { getOrganizerEvents, promoteEvent } from '../../api/eventsApi'; // Assuming API functions
 
 const OrganizerDashboard = () => {
     const [events, setEvents] = useState([]);
@@ -40,7 +39,7 @@ const OrganizerDashboard = () => {
 
     return (
         <div className="flex">
-            <DashboardSidebar role="Organizer" />
+            <DashboardSidebar user="Organizer" />
             <div className="flex-1 p-6">
                 <DashboardHeader title="Manage Your Events" />
                 {events.length > 0 ? (

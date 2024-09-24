@@ -7,6 +7,7 @@ const ProfileSettings = () => {
   const [previewPic, setPreviewPic] = useState(null); // For image preview
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   // Load current user profile (bio and profile pic) when the component loads
   useEffect(() => {
@@ -17,6 +18,7 @@ const ProfileSettings = () => {
         setPreviewPic(response.data.profilePic);
       } catch (err) {
         console.error("Error fetching profile:", err);
+        setError("Failed to load profile information.");
       }
     };
     fetchProfile();
@@ -28,13 +30,26 @@ const ProfileSettings = () => {
 
   const handleProfilePicChange = (e) => {
     const file = e.target.files[0];
+    // Validate file type (e.g., only images)
+    if (file && !file.type.startsWith('image/')) {
+      setError('Please select a valid image file.');
+      return;
+    }
+    // Validate file size (e.g., 2MB limit)
+    if (file && file.size > 2 * 1024 * 1024) {
+      setError('File size should not exceed 2MB.');
+      return;
+    }
     setProfilePic(file);
     setPreviewPic(URL.createObjectURL(file)); // Show preview of the uploaded image
+    setError(''); // Clear previous error
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError('');
+    setSuccess('');
 
     try {
       // Upload profile picture if there's a new one
@@ -56,9 +71,9 @@ const ProfileSettings = () => {
         profilePic: profilePicUrl,
       });
 
-      alert('Profile updated successfully!');
+      setSuccess('Profile updated successfully!');
     } catch (err) {
-      setError('Error updating profile');
+      setError('Error updating profile. Please try again.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -85,11 +100,12 @@ const ProfileSettings = () => {
             <img
               src={previewPic}
               alt="Profile Preview"
-              className="mt-4 w-32 h-32 rounded-full"
+              className="mt-4 w-32 h-32 rounded-full object-cover"
             />
           )}
         </div>
         {error && <p className="text-red-500">{error}</p>}
+        {success && <p className="text-green-500">{success}</p>}
         <button
           type="submit"
           className="bg-orange-500 text-white px-4 py-2 rounded-md"

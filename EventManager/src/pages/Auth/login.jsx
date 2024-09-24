@@ -65,13 +65,13 @@ const Login = () => {
                         onChange={handlePasswordInputChange}
                     />
                     {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-                    <AuthButton text={loading ? "Logging in..." : "Login now"} disabled={loading} />
+                    <AuthButton type="submit" text={loading ? "Logging in..." : "Login now"} disabled={loading} />
                     <div className="flex items-center justify-center mt-4">
                         <AuthButton text="Login with Google" isGoogle />
                     </div>
                 </form>
                 <p className="mt-4 text-sm text-center text-gray-600">
-                    <Link to="/forgot-password" className="text-gray-600">Forgot password? <span className="text-orange-600">Click here!</span></Link>
+                    <Link to="/organizer-dashboard" className="text-gray-600">Forgot password? <span className="text-orange-600">Click here!</span></Link>
                 </p>
             </div>
         </div>
