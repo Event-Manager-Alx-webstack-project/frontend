@@ -1,7 +1,11 @@
 import axios from "axios";
 
 // Use environment variable for API base URL
+<<<<<<< HEAD
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v1/events";
+=======
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v1/";
+>>>>>>> cbe73978297fff776fd7be2f504cf2e5b9b44860
 
 // Function to get auth token from localStorage
 const getAuthToken = () => localStorage.getItem("authToken");
@@ -14,7 +18,7 @@ const defaultHeaders = {
 // Get all events
 export const getEvents = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}events`);
+    const response = await axios.get(`${API_BASE_URL}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching events:", error);
@@ -25,7 +29,7 @@ export const getEvents = async () => {
 // Get a single event
 export const getEvent = async (id) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}events/${id}`);
+    const response = await axios.get(`${API_BASE_URL}/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching event:", error);
@@ -33,11 +37,38 @@ export const getEvent = async (id) => {
   }
 };
 
+// Get events by categories
+export const getEventsByCategories = async (categories) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}?categories=${categoryName}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching events by categories:", error);
+    throw error;
+  }
+}
+
+// Get Events by User
+export const getEventsByUser = async (userId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}?userId=${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching events by user:", error);
+    throw error;
+  }
+}
+
+
 // Create an event
 export const createEvent = async (eventData) => {
   const token = getAuthToken();
   try {
+<<<<<<< HEAD
+    const response = await axios.post(`${API_BASE_URL}`, eventData, {
+=======
     const response = await axios.post(`${API_BASE_URL}events`, eventData, {
+>>>>>>> cbe73978297fff776fd7be2f504cf2e5b9b44860
       headers: {
         ...defaultHeaders,
         Authorization: `Bearer ${token}`,
@@ -83,7 +114,11 @@ export const updateEvent = async (id, eventData) => {
 // Delete an event
 export const deleteEvent = async (id) => {
   try {
+<<<<<<< HEAD
+    const response = await axios.delete(`${API_BASE_URL}${id}`, {
+=======
     const response = await axios.delete(`${API_BASE_URL}events/${id}`, {
+>>>>>>> cbe73978297fff776fd7be2f504cf2e5b9b44860
       headers: defaultHeaders,
     });
     return response.data;
@@ -96,7 +131,7 @@ export const deleteEvent = async (id) => {
 // Search events
 export const searchEvents = async (query) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}events/search?q=${query}`);
+    const response = await axios.get(`${API_BASE_URL}${query}`);
     return response.data;
   } catch (error) {
     console.error("Error searching events:", error);
@@ -105,7 +140,7 @@ export const searchEvents = async (query) => {
 };
 
 // Get events by category
-export const getEventsByCategory = async (category) => {
+/**export const getEventsByCategory = async (category) => {
   try {
     const response = await axios.get(`${API_BASE_URL}events/category/${category}`);
     return response.data;
@@ -113,7 +148,7 @@ export const getEventsByCategory = async (category) => {
     console.error("Error fetching events by category:", error);
     throw error;
   }
-};
+};*/
 
 // Get events by location
 export const getEventsByLocation = async (location) => {
@@ -138,7 +173,7 @@ export const getEventsByDate = async (date) => {
 };
 
 // Get events by user
-export const getEventsByUser = async (userId) => {
+/**export const getEventsByUser = async (userId) => {
   try {
     const response = await axios.get(`${API_BASE_URL}events/user/${userId}`);
     return response.data;
@@ -146,7 +181,7 @@ export const getEventsByUser = async (userId) => {
     console.error("Error fetching events by user:", error);
     throw error;
   }
-};
+};*/
 
 // Get events by user attending
 export const getEventsByUserAttending = async (userId) => {
@@ -205,5 +240,38 @@ export const getUpcomingEvents = async () => {
   } catch (error) {
     console.error('Error fetching upcoming events:', error);
     throw error;
+  }
+};
+
+
+// Like an event
+export const likeEvent = async (eventId) => {
+  const token = getAuthToken();
+  try {
+    const response = await axios.post(`${API_BASE_URL}${eventId}/like`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error liking event:", error);
+    throw error.response?.data || error.message;
+  }
+};
+
+// Dislike an event
+export const dislikeEvent = async (eventId) => {
+  const token = getAuthToken();
+  try {
+    const response = await axios.post(`${API_BASE_URL}${eventId}/dislike`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error disliking event:", error);
+    throw error.response?.data || error.message;
   }
 };
