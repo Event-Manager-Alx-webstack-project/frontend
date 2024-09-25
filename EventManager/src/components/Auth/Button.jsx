@@ -6,7 +6,7 @@ const AuthButton = ({
     isGoogle = false,
     icon = null,
     onClick = () => { },
-    type = 'button', // By default it's a regular button, but can be 'submit'
+    type = 'submit', // By default it's a regular button, but can be 'submit'
 }) => {
     return (
         <button

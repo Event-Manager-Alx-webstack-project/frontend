@@ -4,6 +4,7 @@ import AuthButton from '../../components/Auth/Button';
 import { loginUser, storeAuthToken } from '../../api/authApi';
 import '../../assets/styles/tailwind.css';
 import InputField from '../../components/Auth/InputField';
+import {decode as base64_decode, encode as base64_encode} from 'base-64';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -20,11 +21,15 @@ const Login = () => {
         setLoading(true);
         setError('');
 
+        const credentials = base64_encode(email+':'+password);
+        
+
         try {
-            const response = await loginUser(email, password);
-            if (response.message === "Login successful") {
-                storeAuthToken(response.token);
-                localStorage.setItem('authToken', response.token);
+            const response = await loginUser(credentials);
+            if (response) {
+                console.log(response);
+                storeAuthToken(response);
+                localStorage.setItem('authToken', response);
 
                 // Check user role and navigate accordingly
                 const userRole = response.role; // Ensure your API returns this

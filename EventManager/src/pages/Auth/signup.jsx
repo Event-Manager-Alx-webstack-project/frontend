@@ -26,6 +26,7 @@ const Signup = () => {
     const handleDescriptionInputChange = (e) => setDescription(e.target.value);
 
     const handleSubmit = async (e) => {
+        console.log(username);
         e.preventDefault();
         setError('');
         
