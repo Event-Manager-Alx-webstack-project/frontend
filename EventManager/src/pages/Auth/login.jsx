@@ -32,12 +32,12 @@ const Login = () => {
                 localStorage.setItem('authToken', response);
 
                 // Check user role and navigate accordingly
-                const userRole = response.role; // Ensure your API returns this
-                if (userRole === 'organizer') {
+                //const userRole = response.role; // Ensure your API returns this
+                //if (userRole === 'organizer') {
                     navigate('/organizer-dashboard'); // Redirect to organizer dashboard
-                } else {
-                    navigate('/attendee-dashboard'); // Redirect to attendee dashboard
-                }
+                //} else {
+                  //  navigate('/attendee-dashboard'); // Redirect to attendee dashboard
+               // }
             } else {
                 setError(response.message); // Show error if login fails
             }
@@ -59,7 +59,7 @@ const Login = () => {
                 <form className="mt-6" onSubmit={handleSubmit}>
                     <InputField
                         type="email"
-                        placeholder="Email/Username"
+                        placeholder="Email"
                         value={email}
                         onChange={handleEmailInputChange}
                     />
@@ -70,13 +70,13 @@ const Login = () => {
                         onChange={handlePasswordInputChange}
                     />
                     {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-                    <AuthButton text={loading ? "Logging in..." : "Login now"} disabled={loading} />
+                    <AuthButton type="submit" text={loading ? "Logging in..." : "Login now"} disabled={loading} />
                     <div className="flex items-center justify-center mt-4">
                         <AuthButton text="Login with Google" isGoogle />
                     </div>
                 </form>
                 <p className="mt-4 text-sm text-center text-gray-600">
-                    <Link to="/forgot-password" className="text-gray-600">Forgot password? <span className="text-orange-600">Click here!</span></Link>
+                    <Link to="/organizer-dashboard" className="text-gray-600">Forgot password? <span className="text-orange-600">Click here!</span></Link>
                 </p>
             </div>
         </div>

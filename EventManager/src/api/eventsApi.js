@@ -33,6 +33,28 @@ export const getEvent = async (id) => {
   }
 };
 
+// Get events by categories
+export const getEventsByCategories = async (categoryName) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}events?categories=${categoryName}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching events by categories:", error);
+    throw error;
+  }
+};
+
+// Get Events by User
+export const getEventsByUser = async (userId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}events?userId=${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching events by user:", error);
+    throw error;
+  }
+};
+
 // Create an event
 export const createEvent = async (eventData) => {
   const token = getAuthToken();
@@ -96,21 +118,10 @@ export const deleteEvent = async (id) => {
 // Search events
 export const searchEvents = async (query) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}events/search?q=${query}`);
+    const response = await axios.get(`${API_BASE_URL}events${query}`);
     return response.data;
   } catch (error) {
     console.error("Error searching events:", error);
-    throw error;
-  }
-};
-
-// Get events by category
-export const getEventsByCategory = async (category) => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}events/category/${category}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching events by category:", error);
     throw error;
   }
 };
@@ -133,28 +144,6 @@ export const getEventsByDate = async (date) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching events by date:", error);
-    throw error;
-  }
-};
-
-// Get events by user
-export const getEventsByUser = async (userId) => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}events/user/${userId}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching events by user:", error);
-    throw error;
-  }
-};
-
-// Get events by user attending
-export const getEventsByUserAttending = async (userId) => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}events/attending/${userId}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching events by user attending:", error);
     throw error;
   }
 };
@@ -187,23 +176,55 @@ export const promoteEvent = async (eventId) => {
 };
 
 // Get featured events
-export const getFeaturedEvents = async () => {
+//export const getFeaturedEvents = async () => {
+//  try {
+//    const response = await axios.get(`${API_BASE_URL}events/featured`);
+//    return response.data;
+//  } catch (error) {
+ //   console.error("Error fetching featured events:", error);
+ //   throw error;
+ // }
+//};
+
+// Get upcoming events
+//export const getUpcomingEvents = async () => {
+  //try {
+    //const response = await axios.get(`${API_BASE_URL}events/upcoming`);
+ //   return response.data;
+ // } catch (error) {
+   // console.error('Error fetching upcoming events:', error);
+   // throw error;
+//  }
+//};
+
+// Like an event
+export const likeEvent = async (eventId) => {
+  const token = getAuthToken();
   try {
-    const response = await axios.get(`${API_BASE_URL}events/featured`);
+    const response = await axios.post(`${API_BASE_URL}events/${eventId}/like`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error("Error fetching featured events:", error);
-    throw error;
+    console.error("Error liking event:", error);
+    throw error.response?.data || error.message;
   }
 };
 
-// Get upcoming events
-export const getUpcomingEvents = async () => {
+// Dislike an event
+export const dislikeEvent = async (eventId) => {
+  const token = getAuthToken();
   try {
-    const response = await axios.get(`${API_BASE_URL}events/upcoming`);
+    const response = await axios.post(`${API_BASE_URL}events/${eventId}/dislike`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error('Error fetching upcoming events:', error);
-    throw error;
+    console.error("Error disliking event:", error);
+    throw error.response?.data || error.message;
   }
 };
