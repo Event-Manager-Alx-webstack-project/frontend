@@ -5,7 +5,7 @@ const HeroSection = () => {
                 <h6
                     className="text-6xl font-extrabold mb-6 leading-tight shadow-md animate-fade-in-down"
                 >
-                   Create, Discover, <br /> Enroll and join amazing <br />events on your way.
+                   Create, Discover, <br /> Enroll and join top-notch <br />events platform.
                 </h6>
                 <p
                     className="text-2xl mb-12 text-gray-200 animate-fade-in-up delay-1"

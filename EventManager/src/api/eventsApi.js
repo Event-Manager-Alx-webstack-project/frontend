@@ -176,26 +176,26 @@ export const promoteEvent = async (eventId) => {
 };
 
 // Get featured events
-export const getFeaturedEvents = async () => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}events/featured`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching featured events:", error);
-    throw error;
-  }
-};
+//export const getFeaturedEvents = async () => {
+//  try {
+//    const response = await axios.get(`${API_BASE_URL}events/featured`);
+//    return response.data;
+//  } catch (error) {
+ //   console.error("Error fetching featured events:", error);
+ //   throw error;
+ // }
+//};
 
 // Get upcoming events
-export const getUpcomingEvents = async () => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}events/upcoming`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching upcoming events:', error);
-    throw error;
-  }
-};
+//export const getUpcomingEvents = async () => {
+  //try {
+    //const response = await axios.get(`${API_BASE_URL}events/upcoming`);
+ //   return response.data;
+ // } catch (error) {
+   // console.error('Error fetching upcoming events:', error);
+   // throw error;
+//  }
+//};
 
 // Like an event
 export const likeEvent = async (eventId) => {

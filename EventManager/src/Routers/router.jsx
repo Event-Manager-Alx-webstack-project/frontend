@@ -7,7 +7,7 @@ import SignUpPage from '../pages/Auth/signup';
 import ForgotPage from '../pages/Auth/forgotPassword';
 import ProfileSettings from '../pages/profileSettings';
 import OrganizerDashboard from "../pages/Dashboard/OrganizerDashboard";
-import AttendeeDashboard from "../pages/Dashboard/AttendeeDashboard";
+//import AttendeeDashboard from "../pages/Dashboard/AttendeeDashboard";
 
 const AppRoutes = () => {
     return (
@@ -20,7 +20,6 @@ const AppRoutes = () => {
                 <Route path="/signup" element={<SignUpPage />} />
                 <Route path="/forgot-password" element={<ForgotPage />} />
                 <Route path="/organizer-dashboard" element={<OrganizerDashboard />} />
-                <Route path="/dashboard" element={<AttendeeDashboard />} />
                 <Route path="/profile-settings" element={<ProfileSettings />} />
             </Routes>
         </Router>

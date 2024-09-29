@@ -27,12 +27,12 @@ const Login = () => {
                 localStorage.setItem('authToken', response.token);
 
                 // Check user role and navigate accordingly
-                const userRole = response.role; // Ensure your API returns this
-                if (userRole === 'organizer') {
+                //const userRole = response.role; // Ensure your API returns this
+                //if (userRole === 'organizer') {
                     navigate('/organizer-dashboard'); // Redirect to organizer dashboard
-                } else {
-                    navigate('/attendee-dashboard'); // Redirect to attendee dashboard
-                }
+                //} else {
+                  //  navigate('/attendee-dashboard'); // Redirect to attendee dashboard
+               // }
             } else {
                 setError(response.message); // Show error if login fails
             }
@@ -54,7 +54,7 @@ const Login = () => {
                 <form className="mt-6" onSubmit={handleSubmit}>
                     <InputField
                         type="email"
-                        placeholder="Email/Username"
+                        placeholder="Email"
                         value={email}
                         onChange={handleEmailInputChange}
                     />
