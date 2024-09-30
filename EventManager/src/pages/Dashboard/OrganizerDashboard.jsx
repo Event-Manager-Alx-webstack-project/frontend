@@ -5,7 +5,7 @@ import DashboardHeader from '../../components/DashboardHeader';
 import EventCard from '../../components/EventCard';
 import PromoteEventCard from '../../components/PromoteEventCard';
 import ProfilePicture from '../../components/ProfilePicture'; // Import the new component
-import { getEvents, handleComment, handleFollow, handleLike, handleShare, handleRegister, handlePromote } from '../../api/eventsApi';
+import { getEvents, handleComment, handleFollow, handleLike, handleShare, handleRegister, promoteEvent } from '../../api/eventsApi';
 import '../../assets/styles/tailwind.css';
 
 const OrganizerDashboard = () => {

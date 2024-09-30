@@ -11,14 +11,20 @@ const defaultHeaders = {
   "Content-Type": "application/json",
 };
 
-// Get all events
-export const getEvents = async () => {
+// Get all events or events by a specific organizer
+export const getEvents = async (organizerId = null) => {
   const token = getAuthToken();
   try {
-    const response = await axios.get(`${API_BASE_URL}events`, 
-      {headers: {
-      Authorization: `Bearer ${JSON.parse(token)}`,
-    }})
+    const url = organizerId 
+      ? `${API_BASE_URL}events?organizerId=${organizerId}` 
+      : `${API_BASE_URL}events`;
+    
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(token)}`,
+      },
+    });
+    
     return response.data;
   } catch (error) {
     console.error("Error fetching events:", error);
@@ -27,15 +33,15 @@ export const getEvents = async () => {
 };
 
 // Get a single event
-export const getEvent = async (id) => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}events/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching event:", error);
-    throw error;
-  }
-};
+//export const getEvent = async (id) => {
+  //try {
+    //const response = await axios.get(`${API_BASE_URL}events/${id}`);
+   // return response.data;
+  //} catch (error) {
+    //console.error("Error fetching event:", error);
+    //throw error;
+  //}
+//};
 
 // Get events by categories
 export const getEventsByCategories = async (categoryName) => {
@@ -212,25 +218,74 @@ export const promoteEvent = async (eventId) => {
 //  }
 //};
 //
-export const handleLike = () => {
+export const handleLike = async (eventId) => {
+  try {
+    const response = await likeEvent(eventId);
+    console.log('Event liked:', response);
+    // Update the UI or state accordingly (e.g., increment like count)
+  } catch (error) {
+    console.error('Error liking event:', error);
+    // Handle the error (e.g., show error message)
+  }
+};
 
-}
+export const handleFollow = async (organizerId) => {
+  try {
+    // Assuming you have a follow API for organizers (not included in the provided code)
+    const response = await axios.post(`${API_BASE_URL}organizers/${organizerId}/follow`, {}, {
+      headers: {
+        Authorization: `Bearer ${getAuthToken()}`,
+      },
+    });
+    console.log('Followed organizer:', response);
+    // Update the UI or state accordingly
+  } catch (error) {
+    console.error('Error following organizer:', error);
+    // Handle the error
+  }
+};
 
-export const handleFollow = () => {
-  
-}
+export const handleComment = async (eventId, comment) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}events/${eventId}/comment`, { comment }, {
+      headers: {
+        Authorization: `Bearer ${getAuthToken()}`,
+      },
+    });
+    console.log('Comment added:', response);
+    // Update the UI to reflect the new comment
+  } catch (error) {
+    console.error('Error adding comment:', error);
+    // Handle the error
+  }
+};
 
-export const handleComment = () => {
-  
-}
+export const handleShare = async (eventId) => {
+  try {
+    // Logic for sharing the event (e.g., copy link or share on social media)
+    const shareLink = `${window.location.origin}/events/${eventId}`;
+    console.log(`Event link copied to clipboard: ${shareLink}`);
+    // You could also integrate a sharing API if available
+  } catch (error) {
+    console.error('Error sharing event:', error);
+  }
+};
 
-export const handleShare = () => {
-  
-}
+//export const handleRegister = async (eventId) => {
+  //try {
+    //const response = await axios.post(`${API_BASE_URL}events/${eventId}/register`, {}, {
+      //headers: {
+        //Authorization: `Bearer ${getAuthToken()}`,
+     // },
+    //});
+    //console.log('Successfully registered for the event', response.data);
+    // Update the UI or state accordingly
+  //} catch (error) {
+   // console.error('Error registering for the event:', error);
+    // Handle the error
+ // }
+//};
 
-export const handlePromote = () => {
-  
-}
 // Like an event
 export const likeEvent = async (eventId) => {
   const token = getAuthToken();
