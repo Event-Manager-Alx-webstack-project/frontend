@@ -147,6 +147,17 @@ export const getEventsByDate = async (date) => {
     throw error;
   }
 };
+const handleRegister = async (eventId) => {
+  try {
+      const response = await axios.post(`/api/events/${eventId}/register`);
+      console.log('Successfully registered for the event', response.data);
+      // Show success message or update the UI accordingly
+  } catch (error) {
+      console.error('Error registering for the event:', error);
+      // Show error message or handle error accordingly
+  }
+};
+
 
 // Get events by organizer (assuming organizer is identified by user ID)
 export const getOrganizerEvents = async (organizerId) => {

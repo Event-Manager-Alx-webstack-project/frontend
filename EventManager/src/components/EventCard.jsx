@@ -1,23 +1,25 @@
 import { useState } from 'react';
 import { FaCalendarAlt, FaMapMarkerAlt, FaDollarSign, FaHeart, FaShareAlt, FaCommentAlt, FaUserPlus } from 'react-icons/fa';
 
-const EventCard = ({ id, title, date, location, description, thumbnail, price, onLike, onFollow, onComment, onShare }) => {
+const EventCard = ({ id, title, date, location, description, thumbnail, price, onLike, onFollow, onComment, onShare, onRegister }) => {
     const [likes, setLikes] = useState(0);
     const [isLiked, setIsLiked] = useState(false);
     const [comment, setComment] = useState('');
 
     const handleLike = () => {
-        setIsLiked(prev => !prev);
-        setLikes(prev => (isLiked ? prev - 1 : prev + 1));
+        setIsLiked(!isLiked);
+        setLikes(isLiked ? likes - 1 : likes + 1);
         onLike(id); // Call the backend to register the like
     };
 
     const handleCommentSubmit = (e) => {
         e.preventDefault();
-        if (comment.trim()) {
-            onComment(id, comment);
-            setComment(''); // Clear the comment box after submission
-        }
+        onComment(id, comment);
+        setComment(''); // Clear the comment box after submission
+    };
+
+    const handleRegister = () => {
+        onRegister(id); // Trigger registration logic
     };
 
     return (
@@ -42,7 +44,7 @@ const EventCard = ({ id, title, date, location, description, thumbnail, price, o
                         <FaMapMarkerAlt className="text-yellow-600 mr-2" />
                         {location}
                     </div>
-                    {price > 0 && (
+                    {price !== 0 && (
                         <div className="flex items-center mb-2">
                             <FaDollarSign className="text-yellow-600 mr-2" />
                             <span>{price}</span>
@@ -53,29 +55,30 @@ const EventCard = ({ id, title, date, location, description, thumbnail, price, o
                 
                 {/* Interaction Buttons */}
                 <div className="flex space-x-4 mb-4">
-                    <button 
-                        onClick={handleLike} 
-                        className={`flex items-center focus:outline-none ${isLiked ? 'text-red-600' : 'text-gray-600'}`}
-                    >
+                    <button onClick={handleLike} className={`flex items-center ${isLiked ? 'text-red-600' : 'text-gray-600'} focus:outline-none`}>
                         <FaHeart className="mr-1" /> {likes}
                     </button>
-                    <button 
-                        onClick={() => onFollow(id)} 
-                        className="flex items-center text-gray-600 focus:outline-none"
-                    >
+                    <button onClick={() => onFollow(id)} className="flex items-center text-gray-600 focus:outline-none">
                         <FaUserPlus className="mr-1" /> Follow
                     </button>
-                    <button 
-                        onClick={() => onShare(id)} 
-                        className="flex items-center text-gray-600 focus:outline-none"
-                    >
+                    <button onClick={() => onShare(id)} className="flex items-center text-gray-600 focus:outline-none">
                         <FaShareAlt className="mr-1" /> Share
                     </button>
                     <button className="flex items-center text-gray-600 focus:outline-none">
                         <FaCommentAlt className="mr-1" /> Comment
                     </button>
                 </div>
-                
+
+                {/* Register for Event Button */}
+                <div className="mb-4">
+                    <button 
+                        onClick={handleRegister} 
+                        className="bg-blue-500 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-600 transition-colors w-full"
+                    >
+                        Register for Event
+                    </button>
+                </div>
+
                 {/* Comment Section */}
                 <form onSubmit={handleCommentSubmit} className="mb-4">
                     <input
@@ -85,11 +88,8 @@ const EventCard = ({ id, title, date, location, description, thumbnail, price, o
                         placeholder="Write a comment..."
                         className="w-full p-2 border rounded mb-2"
                     />
-                    <button 
-                        type="submit" 
-                        className="bg-yellow-500 text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-600 transition-colors"
-                    >
-                        Post 
+                    <button type="submit" className="bg-yellow-500 text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-600 transition-colors">
+                        Post Comment
                     </button>
                 </form>
             </div>

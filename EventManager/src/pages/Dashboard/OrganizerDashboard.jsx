@@ -16,7 +16,7 @@ const OrganizerDashboard = () => {
     useEffect(() => {
         const organizerId = "organizer-id"; // Replace with the real organizer ID
 
-        getOrganizerEvents(organizerId)
+        getEvents(organizerId)
             .then(data => {
                 setEvents(data);
                 setLoading(false);
@@ -86,13 +86,21 @@ const OrganizerDashboard = () => {
                             ) : (
                                 <EventCard
                                     key={event.id}
+                                    id={event.id}
                                     title={event.title}
                                     date={event.date}
                                     location={event.location}
                                     description={event.description}
                                     thumbnail={event.thumbnail}
                                     price={event.price}
+                                    onLike={handleLike}
+                                    onFollow={handleFollow}
+                                    onComment={handleComment}
+                                    onShare={handleShare}
+                                    onRegister={handleRegister}
                                 />
+
+                                
                             )
                         ))}
                     </div>
