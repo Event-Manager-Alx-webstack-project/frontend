@@ -79,7 +79,7 @@ const Header = () => {
                             <Link to="/login">
                                 <button className="bg-yellow-500 text-black px-5 py-2 rounded-md font-semibold hover:bg-yellow-600 transition-colors">Sign In</button>
                             </Link>
-                            <Link to="/signup">
+                            <Link to="/OrganizerDashboard">
                                 <button className="bg-yellow-500 text-black px-5 py-2 rounded-md font-semibold hover:bg-yellow-600 transition-colors">Sign Up</button>
                             </Link>
                         </>

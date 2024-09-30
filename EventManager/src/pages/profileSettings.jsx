@@ -24,6 +24,14 @@ const ProfileSettings = () => {
     fetchProfile();
   }, []);
 
+  // Handle success message timeout
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => setSuccess(''), 3000); // Hide success message after 3 seconds
+      return () => clearTimeout(timer); // Cleanup timeout
+    }
+  }, [success]);
+
   const handleBioChange = (e) => {
     setBio(e.target.value);
   };
@@ -108,10 +116,17 @@ const ProfileSettings = () => {
         {success && <p className="text-green-500">{success}</p>}
         <button
           type="submit"
-          className="bg-orange-500 text-white px-4 py-2 rounded-md"
+          className="bg-orange-500 text-white px-4 py-2 rounded-md flex items-center"
           disabled={loading}
         >
-          {loading ? 'Saving...' : 'Save Changes'}
+          {loading ? (
+            <>
+              <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 rounded-full border-white mr-2"></span>
+              Saving...
+            </>
+          ) : (
+            'Save Changes'
+          )}
         </button>
       </form>
     </div>

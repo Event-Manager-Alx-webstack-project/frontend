@@ -7,7 +7,7 @@ import SignUpPage from '../pages/Auth/signup';
 import ForgotPage from '../pages/Auth/forgotPassword';
 import ProfileSettings from '../pages/profileSettings';
 import OrganizerDashboard from "../pages/Dashboard/OrganizerDashboard";
-//import AttendeeDashboard from "../pages/Dashboard/AttendeeDashboard";
+import NotFound from '../pages/NotFound'; // Make sure you have this component
 
 const AppRoutes = () => {
     return (
@@ -21,6 +21,7 @@ const AppRoutes = () => {
                 <Route path="/forgot-password" element={<ForgotPage />} />
                 <Route path="/organizer-dashboard" element={<OrganizerDashboard />} />
                 <Route path="/profile-settings" element={<ProfileSettings />} />
+                <Route path="*" element={<NotFound />} /> {/* Fallback for unmatched routes */}
             </Routes>
         </Router>
     );

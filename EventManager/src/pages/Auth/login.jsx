@@ -76,7 +76,7 @@ const Login = () => {
                     </div>
                 </form>
                 <p className="mt-4 text-sm text-center text-gray-600">
-                    <Link to="/organizer-dashboard" className="text-gray-600">Forgot password? <span className="text-orange-600">Click here!</span></Link>
+                    <Link to="/forgot-password" className="text-gray-600">Forgot password? <span className="text-orange-600">Click here!</span></Link>
                 </p>
             </div>
         </div>
