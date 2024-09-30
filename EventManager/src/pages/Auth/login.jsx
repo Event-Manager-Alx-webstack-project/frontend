@@ -27,9 +27,9 @@ const Login = () => {
         try {
             const response = await loginUser(credentials);
             if (response) {
-                console.log(response);
-                storeAuthToken(response);
-                localStorage.setItem('authToken', response);
+                // console.log(response);
+                storeAuthToken(JSON.stringify(response.token));
+                // localStorage.setItem('authToken', response);
 
                 // Check user role and navigate accordingly
                 //const userRole = response.role; // Ensure your API returns this

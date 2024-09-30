@@ -13,8 +13,12 @@ const defaultHeaders = {
 
 // Get all events
 export const getEvents = async () => {
+  const token = getAuthToken();
   try {
-    const response = await axios.get(`${API_BASE_URL}events`);
+    const response = await axios.get(`${API_BASE_URL}events`, 
+      {headers: {
+      Authorization: `Bearer ${JSON.parse(token)}`,
+    }})
     return response.data;
   } catch (error) {
     console.error("Error fetching events:", error);
@@ -62,7 +66,7 @@ export const createEvent = async (eventData) => {
     const response = await axios.post(`${API_BASE_URL}events`, eventData, {
       headers: {
         ...defaultHeaders,
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${JSON.parse(token)}`,
       },
     });
     return response.data;
