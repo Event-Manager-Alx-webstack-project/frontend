@@ -9,15 +9,16 @@ const getAuthToken = () => {
 
 // Function to set default headers
 const getDefaultHeaders = () => ({
-  Authorization: `Bearer ${getAuthToken()}`,
+  Authorization: `Bearer ${JSON.parse(getAuthToken())}`,
 });
 
 // Get categories function
 export const getCategories = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}users/categories`, {
+    const response = await axios.get(`${API_BASE_URL}categories`, {
       headers: getDefaultHeaders(),
     });
+    console.log(response.categories);
     return response.data;
   } catch (error) {
     console.error("Error fetching categories:", error);
@@ -26,11 +27,12 @@ export const getCategories = async () => {
 };
 
 // Get organizers function
-export const getOrganizers = async () => {
+export const getUsers = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}users/organizers`, {
+    const response = await axios.get(`${API_BASE_URL}users/all`, {
       headers: getDefaultHeaders(),
     });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching organizers:", error);

@@ -7,7 +7,7 @@ import { getEvents } from '../../api/eventsApi';
 const DiscoverEventsPage = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState(' ');
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -26,9 +26,9 @@ const DiscoverEventsPage = () => {
     }, []);
 
     const filteredEvents = events.filter(event =>
-        event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        event.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        event.location.toLowerCase().includes(searchTerm.toLowerCase())
+        event.name.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+        event.category.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+        event.location.toLowerCase().includes(searchTerm?.toLowerCase())
     );
 
     return (

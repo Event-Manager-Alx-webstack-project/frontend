@@ -43,6 +43,8 @@ export const loginUser = async (credentials) => {
   try {
     // axiosInstance.headers.Authorization = `Bearer ${credentials}`
     const response = await axios(config);
+    // console.log(response.data);
+    // storeAuthToken(response.data);
     return response.data;
   } catch (error) {
     console.error("Error logging in:", error.response ? error.response.data : error.message);
@@ -51,9 +53,9 @@ export const loginUser = async (credentials) => {
 };
 
 // Register function
-export const registerUser = async ({ username, email, password, confirmPassword, role, brandName, description }) => {
+export const registerUser = async ({ username, email, password, firstName, lastName, role, brandName, description }) => {
   try {
-    const payload = { username, email, password, confirmPassword, role };
+    const payload = { username, email, password, lastName, firstName, role };
     
     if (role === "organizer") {
       payload.brandName = brandName;
@@ -71,12 +73,20 @@ export const registerUser = async ({ username, email, password, confirmPassword,
 // Fetch user profile
 export const getUserProfile = async () => {
   const token = getAuthToken();
+  console.log(JSON.parse(token));
+  // var config = {
+  //   method: 'get',
+  //   url: `${API_BASE_URL}users/profile`,
+  //   headers: { 'Authorization': 'Bearer '+ JSON.parse(token) }
+  // };
   try {
-    const response = await axiosInstance.get("users/profile", {
+    const response = await axiosInstance.get(`${API_BASE_URL}users/profile`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${JSON.parse(token)}`,
       },
     });
+    // const response = await axios(config);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching user profile:", error.response ? error.response.data : error.message);
