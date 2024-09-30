@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { getUserProfile } from '../api/authApi';
 
 const ProfileSettings = () => {
   const [bio, setBio] = useState('');
@@ -13,7 +14,9 @@ const ProfileSettings = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get('/api/users/profile');
+        // const response = await axios.get('/api/users/profile');
+        const response = getUserProfile();
+        console.log(response);
         setBio(response.data.bio);
         setPreviewPic(response.data.profilePic);
       } catch (err) {

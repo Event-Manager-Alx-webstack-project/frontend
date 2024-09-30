@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createEvent, uploadThumbnail } from '../../api/eventsApi';
-import { getOrganizers, getCategories } from '../../api/UserApi';
+import { getUsers, getCategories } from '../../api/UserApi';
 import AuthenticatedLayout from '../../layout/authticatedLayout';
 import { getUserProfile } from '../../api/authApi';
 import Header from '../../components/Header';
@@ -20,6 +20,7 @@ const CreateEventPage = () => {
     const [organizerId, setOrganizerId] = useState('');
     const [thumbnail, setThumbnail] = useState(null);
     const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,15 +34,16 @@ const CreateEventPage = () => {
                 }
 
                 try {
-                    const organizersData = await getOrganizers();
-                    setOrganizers(organizersData);
+                    const organizersData = await getUsers();
+                    console.log(organizersData.users);
+                    setOrganizers(organizersData.users);
                 } catch (error) {
                     console.error('Error fetching organizers:', error);
                 }
 
                 try {
                     const categoriesData = await getCategories();
-                    setCategories(categoriesData);
+                    setCategories(categoriesData.categories);
                 } catch (error) {
                     console.error('Error fetching categories:', error);
                 }
@@ -55,16 +57,17 @@ const CreateEventPage = () => {
     };
 
     const handleSubmit = async (e) => {
+        console.log('submit');
         e.preventDefault();
 
-        if (!user || !user.id) {
-            console.error('User is not defined or user ID is missing');
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                submit: 'User is not authenticated. Please log in again.'
-            }));
-            return;
-        }
+        // if (!user || !user.id) {
+        //     console.error('User is not defined or user ID is missing');
+        //     setErrors((prevErrors) => ({
+        //         ...prevErrors,
+        //         submit: 'User is not authenticated. Please log in again.'
+        //     }));
+        //     return;
+        // }
 
         let thumbnailPath = null;
         if (thumbnail) {
@@ -90,14 +93,14 @@ const CreateEventPage = () => {
             categoryId,
             description,
             price,
-            organizerId: user.id, // organizerId is same as user.id
+            organizerId, //user.id, // organizerId is same as user.id
             thumbnail: thumbnailPath,
         };
-
+        console.log(eventData);
         try {
             const response = await createEvent(eventData);
             console.log('Server response:', response); // Log the server response for debugging
-            if (response.status === 201) {
+            if (response) {
                 navigate('/events/discover');
             } else {
                 throw new Error('Network response was not ok');
