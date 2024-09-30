@@ -93,3 +93,22 @@ export const getUserProfile = async () => {
     throw error;
   }
 };
+
+export const updateUserProfile = async({ bio, profilePicUrl}) => {
+  const token = getAuthToken();
+  console.log(JSON.parse(token));
+  const payload = { bio, profilePicUrl };
+  try {
+    const response = await axiosInstance.put(`${API_BASE_URL}users/profile`, payload, {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(token)}`,
+      },
+    });
+    // const response = await axios(config);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user profile:", error.response ? error.response.data : error.message);
+    throw error;
+  }
+}

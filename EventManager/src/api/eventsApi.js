@@ -151,7 +151,7 @@ export const getEventsByDate = async (date) => {
     throw error;
   }
 };
-const handleRegister = async (eventId) => {
+export const handleRegister = async (eventId) => {
   try {
       const response = await axios.post(`/api/events/${eventId}/register`);
       console.log('Successfully registered for the event', response.data);
@@ -211,7 +211,26 @@ export const promoteEvent = async (eventId) => {
    // throw error;
 //  }
 //};
+//
+export const handleLike = () => {
 
+}
+
+export const handleFollow = () => {
+  
+}
+
+export const handleComment = () => {
+  
+}
+
+export const handleShare = () => {
+  
+}
+
+export const handlePromote = () => {
+  
+}
 // Like an event
 export const likeEvent = async (eventId) => {
   const token = getAuthToken();

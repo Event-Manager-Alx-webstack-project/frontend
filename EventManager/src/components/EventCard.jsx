@@ -13,6 +13,7 @@ const EventCard = ({ id, title, date, location, description, thumbnail, price, o
     };
 
     const handleCommentSubmit = (e) => {
+        console.log(e.target.value);
         e.preventDefault();
         onComment(id, comment);
         setComment(''); // Clear the comment box after submission

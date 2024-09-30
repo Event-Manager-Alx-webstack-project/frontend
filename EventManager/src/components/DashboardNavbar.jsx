@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 const DashboardNavbar = () => {
     return (
         <nav className="bg-gray-800 p-4">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getUserProfile } from '../api/authApi';
+import { getUserProfile, updateUserProfile } from '../api/authApi';
 
 const ProfileSettings = () => {
   const [bio, setBio] = useState('');
@@ -77,10 +77,11 @@ const ProfileSettings = () => {
       }
 
       // Save the bio and updated profile pic URL
-      await axios.put('/api/users/profile', {
-        bio,
-        profilePic: profilePicUrl,
-      });
+      // await axios.put('/api/users/profile', {
+      //   bio,
+      //   profilePic: profilePicUrl,
+      // });
+      await updateUserProfile({bio, profilePicUrl});
 
       setSuccess('Profile updated successfully!');
     } catch (err) {
